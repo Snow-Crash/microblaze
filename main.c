@@ -6,7 +6,6 @@
 #define SET_TEST_SPIKE 4
 #define CLEAR_BUFFERED_SPIKE 5
 
-
 //AXI GPIO driver
 #include "xgpio.h"
 
@@ -15,21 +14,14 @@
 
 //information about AXI peripherals
 #include "xparameters.h"
-
-
 #include "xllfifo.h"
-
 #include "xllfifo_hw.h"
-
 #include "xstream_test.h"
 #include "xstream_test_hw.h"
-
 #include "xneuron.h"
 #include "xneuron_hw.h"
-
 #include "xstatus.h"
 #include "xuartlite.h"
-
 #include "xuartlite_l.h"
 
 /*******************************Endianness************************************
@@ -42,7 +34,6 @@
 // reference: https://stackoverflow.com/questions/3784263/converting-an-int-into-a-4-byte-char-array-c
 // split a integer into bytes e.g.
 // msb in byte[3], lsb in byte[0]
-// reason is that byte[0] will be send first, to guarantee msb are sent first, store bytes in reverse order
 // d'512 = b'1000000000
 // split it into 4 bytes, it will be
 // byte[3] = b00000000, byte[2] = b00000000, byte[1] = b00000010, byte[0] = b00000000
@@ -219,8 +210,8 @@ int main()
 	int status;
 
 	//xil_printf("################## start of program ######################\n");
-	XGpio gpio;
-	u32 btn, led;
+//	XGpio gpio;
+//	u32 btn, led;
 
 	//test uart
 
@@ -291,8 +282,6 @@ int main()
 
 	while(1)
 	{
-		unsigned int sentcount = 0;
-
 		int action = 0;
 
 		while(1)
