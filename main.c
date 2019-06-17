@@ -438,7 +438,7 @@ int main()
 			xil_printf("input spike 127-64:%u,%u\n",(u32)(spike_127_64>>32), spike_127_64);
 
 		}
-		else if (action = CLEAR_BUFFERED_SPIKE)
+		else if (action == CLEAR_BUFFERED_SPIKE)
 		{
 			spike_63_0 = 0;
 			spike_127_64 = 0;
