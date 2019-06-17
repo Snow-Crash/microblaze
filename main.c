@@ -301,24 +301,21 @@ int main()
 			for (int i = 0; i < 4; i++)
 				recv_data[i] = XUartLite_RecvByte(XPAR_AXI_UARTLITE_0_BASEADDR);
 
-			xil_printf("receive:%d,%d,%d,%d\n",recv_data[0],recv_data[1],recv_data[2],recv_data[3]);
+			//xil_printf("receive:%d,%d,%d,%d\n",recv_data[0],recv_data[1],recv_data[2],recv_data[3]);
 
 			if (recv_data[3] == START_NEURON)
 			{
 				action = START_NEURON;
-				xil_printf("start\n");
 				break;
 			}
 			else if(recv_data[3] == RESET_NEURON)
 			{
 				action = RESET_NEURON;
-				xil_printf("reset\n");
 				break;
 			}
 			else if(recv_data[3] == SET_SPIKE)
 			{
 				action = SET_SPIKE;
-				xil_printf("set spike\n");
 				break;
 			}
 			else if (recv_data[3] == SET_TEST_SPIKE)
@@ -340,26 +337,9 @@ int main()
 				for (int i = 0; i < 4; i++)
 					sendbuf[i] = i;
 
-				//send test data
-//				xil_printf("use XUartLite_Send\n");
-//				//sleep(1);
-//				sendcnt = XUartLite_Send(&UartLite, sendbuf, 4);
-//				xil_printf("send count: %d\n", sendcnt);
-
-				//send test data
-//				xil_printf("use XUartLite_SendByte\n");
-				//sleep(1);
 				for (int i = 0; i < 4; i++)
 					XUartLite_SendByte(XPAR_AXI_UARTLITE_0_BASEADDR, 15);
-
-				//send input back
-//				xil_printf("use send_packet\n");
-//				//sleep(1);
-//				sentcount = send_packet(&UartLite, 1, recv_data[0]);
-//				xil_printf("\n");
-				//break;
 			}
-
 		}
 
 		if (action == START_NEURON)
@@ -368,20 +348,20 @@ int main()
 			int neuron_done =  XNeuron_IsDone(&neuron_inst);
 			int neuron_idle =  XNeuron_IsIdle(&neuron_inst);
 			int neuron_ready =  XNeuron_IsReady(&neuron_inst);
-			//xil_printf("check neuron status\n");
-			xil_printf("done: %d,idle:%d,ready:%d\n", neuron_done, neuron_idle, neuron_ready);
+
+//			xil_printf("done: %d,idle:%d,ready:%d\n", neuron_done, neuron_idle, neuron_ready);
 
 			//xil_printf("check input spike before set\n %d \n",spike_63_0);
 			XNeuron_Set_input_spike_63_0_V(&neuron_inst, spike_63_0);
 			XNeuron_Set_input_spike_127_64_V(&neuron_inst, spike_127_64);
 
-			spike_63_0 = XNeuron_Get_input_spike_63_0_V(&neuron_inst);
+//			spike_63_0 = XNeuron_Get_input_spike_63_0_V(&neuron_inst);
 			//xil_printf("spike buffer 63-0: %u, %u \n",(u32)(spike_63_0>>32), spike_63_0);
-			spike_127_64 = XNeuron_Get_input_spike_127_64_V(&neuron_inst);
-			xil_printf("spike buffer:%u,%u,%u,%u\n",(u32)(spike_127_64>>32), spike_127_64, (u32)(spike_63_0>>32), spike_63_0);
+//			spike_127_64 = XNeuron_Get_input_spike_127_64_V(&neuron_inst);
+//			xil_printf("spike buffer:%u,%u,%u,%u\n",(u32)(spike_127_64>>32), spike_127_64, (u32)(spike_63_0>>32), spike_63_0);
 
 			//start neuron
-			xil_printf("start\n");
+//			xil_printf("start\n");
 			XNeuron_Start(&neuron_inst);
 
 			//check neuron status
@@ -390,14 +370,14 @@ int main()
 			neuron_idle =  XNeuron_IsIdle(&neuron_inst);
 			neuron_ready =  XNeuron_IsReady(&neuron_inst);
 
-			xil_printf("done:%d,idle:%d,ready:%d\n", neuron_done, neuron_idle, neuron_ready);
+//			xil_printf("done:%d,idle:%d,ready:%d\n", neuron_done, neuron_idle, neuron_ready);
 
-			xil_printf("psp:");
+//			xil_printf("psp:");
 			//recv(&psp_fifo);
 			read_fifo(&psp_fifo);
 
 			xil_printf("\n");
-			xil_printf("voltage:");
+//			xil_printf("voltage:");
 
 			//recv(&voltage_fifo);
 			read_fifo(&voltage_fifo);
@@ -413,6 +393,7 @@ int main()
 		}
 		else if (action == RESET_NEURON)
 		{
+//			xil_printf("reset\n");
 			XNeuron_Set_reset_neuron(&neuron_inst, 1);
 			XNeuron_Start(&neuron_inst);
 			XNeuron_Set_reset_neuron(&neuron_inst, 0);
@@ -420,9 +401,9 @@ int main()
 		else if(action == SET_TEST_SPIKE)
 		{
 			XNeuron_Set_input_spike_63_0_V(&neuron_inst, 65535);
-			xil_printf("set test spike\n");
+//			xil_printf("set test spike\n");
 			spike_63_0 = XNeuron_Get_input_spike_63_0_V(&neuron_inst);
-			xil_printf("check input spike:%d\n",spike_63_0);
+//			xil_printf("check input spike:%d\n",spike_63_0);
 		}
 		else if(action == SET_SPIKE)
 		{
@@ -434,8 +415,8 @@ int main()
 			else
 				spike_127_64 |= one << (recv_data[2] - 64);
 
-			xil_printf("input spike 63-0:%u,%u\n",(u32)(spike_63_0>>32), spike_63_0);
-			xil_printf("input spike 127-64:%u,%u\n",(u32)(spike_127_64>>32), spike_127_64);
+//			xil_printf("input spike 63-0:%u,%u\n",(u32)(spike_63_0>>32), spike_63_0);
+//			xil_printf("input spike 127-64:%u,%u\n",(u32)(spike_127_64>>32), spike_127_64);
 
 		}
 		else if (action == CLEAR_BUFFERED_SPIKE)
